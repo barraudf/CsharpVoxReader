@@ -29,8 +29,8 @@ namespace CsharpVoxReader.Chunks
             for (int i = 0; i < numVoxels; i++)
             {
                 byte x = br.ReadByte();
-                byte y = br.ReadByte();
                 byte z = br.ReadByte();
+                byte y = br.ReadByte();
                 byte index = br.ReadByte();
                 _Indexes[x, y, z] = index;
                 readSize += 4;

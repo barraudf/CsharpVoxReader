@@ -17,8 +17,8 @@ namespace CsharpVoxReader.Chunks
             int readSize = base.Read(br, loader);
 
             Int32 x = br.ReadInt32();
-            Int32 y = br.ReadInt32();
             Int32 z = br.ReadInt32();
+            Int32 y = br.ReadInt32();
             readSize += sizeof(Int32) * 3;
 
             string id = Chunk.ReadChunkId(br);
