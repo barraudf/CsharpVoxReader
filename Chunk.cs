@@ -50,6 +50,11 @@ namespace CsharpVoxReader
                 case Chunks.Palette.ID : return new Chunks.Palette();
                 case Chunks.Pack.ID: return new Chunks.Pack();
                 case Chunks.MaterialOld.ID: return new Chunks.MaterialOld();
+                case Chunks.TransformNode.ID: return new Chunks.TransformNode();
+                case Chunks.GroupNode.ID: return new Chunks.GroupNode();
+                case Chunks.ShapeNode.ID: return new Chunks.ShapeNode();
+                case Chunks.Material.ID: return new Chunks.Material();
+                case Chunks.Layer.ID: return new Chunks.Layer();
                 default: return new Chunks.Unknown(id);
             }
         }
