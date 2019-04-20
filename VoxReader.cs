@@ -11,6 +11,7 @@ namespace CsharpVoxReader
 
         protected string Path { get; set; }
         protected IVoxLoader Loader { get; set; }
+        protected Stream Origin { get; set; }
 
         public VoxReader(string path, IVoxLoader loader)
         {
@@ -21,38 +22,52 @@ namespace CsharpVoxReader
             Loader = loader;
         }
 
+        public VoxReader(Stream s, IVoxLoader loader)
+        {
+            if (loader == null) throw new ArgumentNullException(nameof(loader));
+
+            Origin = s;
+            Loader = loader;
+        }
+
         private VoxReader()
         {
         }
 
         public Chunk Read()
         {
-            using (FileStream fs = File.OpenRead(Path))
-            using(BinaryReader br = new BinaryReader(fs))
-            {
-                char[] magicNumber = br.ReadChars(4);
-                if( ! magicNumber.SequenceEqual("VOX ".ToCharArray()))
-                {
-                    throw new InvalidDataException("Can't read VOX file : invalid vox signature");
-                }
-
-                Int32 version = br.ReadInt32();
-                if(version > FILE_FORMAT_VERSION)
-                {
-                    throw new InvalidDataException($"Can't read VOX file : file format version ({version}) is newer than reader version ({FILE_FORMAT_VERSION})");
-                }
-
-                string id = Chunk.ReadChunkId(br);
-                if(id != Chunks.Main.ID)
-                {
-                    throw new InvalidDataException($"Can't read VOX file : MAIN chunk expected (was {id}");
-                }
-
-                Chunk main = Chunk.CreateChunk(id);
-                main.Read(br, Loader);
-
-                return main;
+            using (FileStream fs = File.OpenRead(Path)) {
+              Origin = fs;
+              return ReadFromStream();
             }
+        }
+
+        public Chunk ReadFromStream() {
+          using(BinaryReader br = new BinaryReader(Origin))
+          {
+              char[] magicNumber = br.ReadChars(4);
+              if( ! magicNumber.SequenceEqual("VOX ".ToCharArray()))
+              {
+                  throw new InvalidDataException("Can't read VOX file : invalid vox signature");
+              }
+
+              Int32 version = br.ReadInt32();
+              if(version > FILE_FORMAT_VERSION)
+              {
+                  throw new InvalidDataException($"Can't read VOX file : file format version ({version}) is newer than reader version ({FILE_FORMAT_VERSION})");
+              }
+
+              string id = Chunk.ReadChunkId(br);
+              if(id != Chunks.Main.ID)
+              {
+                  throw new InvalidDataException($"Can't read VOX file : MAIN chunk expected (was {id}");
+              }
+
+              Chunk main = Chunk.CreateChunk(id);
+              main.Read(br, Loader);
+
+              return main;
+          }
         }
     }
 }
