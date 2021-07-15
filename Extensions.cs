@@ -24,5 +24,23 @@ namespace CsharpVoxReader
             g = bytes[1];
             b = bytes[0];
         }
+
+        /// <summary>
+        /// Try Get name from attributes Dictionary.
+        /// </summary>
+        /// <param name="attributes">Chunk attributes.</param>
+        /// <param name="name">result name. If the returned value is false, null will be null. </param>
+        /// <returns>Success or failure of name acquisition</returns>
+        public static bool TryGetName(this Dictionary<string, byte[]> attributes, out string name)
+        {
+            if (attributes.TryGetValue("_name", out var bytes))
+            {
+                name = System.Text.Encoding.ASCII.GetString(bytes);
+                return true;
+            }
+
+            name = null;
+            return false;
+        }
     }
 }
