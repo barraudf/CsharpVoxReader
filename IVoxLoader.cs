@@ -13,10 +13,10 @@ namespace CsharpVoxReader
         void SetModelCount(Int32 count);
         void SetMaterialOld(Int32 paletteId, Chunks.MaterialOld.MaterialTypes type, float weight, Chunks.MaterialOld.PropertyBits property, float normalized);
         // VOX Extensions
-        void NewTransformNode(Int32 id, Int32 childNodeId, Int32 layerId, Dictionary<string, byte[]>[] framesAttributes);
+        void NewTransformNode(Int32 id, Int32 childNodeId, Int32 layerId, string name, Dictionary<string, byte[]>[] framesAttributes);
         void NewGroupNode(Int32 id, Dictionary<string, byte[]> attributes, Int32[] childrenIds);
         void NewShapeNode(Int32 id, Dictionary<string, byte[]> attributes, Int32[] modelIds, Dictionary<string, byte[]>[] modelsAttributes);
         void NewMaterial(Int32 id, Dictionary<string, byte[]> attributes);
-        void NewLayer(Int32 id, Dictionary<string, byte[]> attributes);
+        void NewLayer(Int32 id, string name, Dictionary<string, byte[]> attributes);
     }
 }

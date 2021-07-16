@@ -20,6 +20,8 @@ namespace CsharpVoxReader.Chunks
             Int32 id = br.ReadInt32();
             Dictionary<string, byte[]> attributes = GenericsReader.ReadDict(br, ref readSize);
 
+            attributes.TryGetName(out var name);
+
             Int32 childNodeId = br.ReadInt32();
             Int32 reservedId = br.ReadInt32();
             Int32 layerId = br.ReadInt32();
@@ -40,7 +42,7 @@ namespace CsharpVoxReader.Chunks
             }
 
             // TODO: Notify the IVoxLoader of the transform node
-            loader.NewTransformNode(id, childNodeId, layerId, framesAttributes);
+            loader.NewTransformNode(id, childNodeId, layerId, name, framesAttributes);
             return readSize;
         }
     }

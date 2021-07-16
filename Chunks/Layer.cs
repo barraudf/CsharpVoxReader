@@ -19,10 +19,12 @@ namespace CsharpVoxReader.Chunks
             Int32 id = br.ReadInt32();
             Dictionary<string, byte[]> attributes = GenericsReader.ReadDict(br, ref readSize);
 
+			attributes.TryGetName(out var name);
+
             Int32 reservedId = br.ReadInt32();
             readSize += sizeof(Int32) * 2;
 
-            loader.NewLayer(id, attributes);
+            loader.NewLayer(id, name, attributes);
             return readSize;
         }
     }
